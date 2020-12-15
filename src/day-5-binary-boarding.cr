@@ -33,11 +33,19 @@ unless file_name.empty?
   end
 
   max = 0
+  id_list = [] of Int32
   passes.each do |pass|
+    id_list << pass.id
     max = pass.id if pass.id > max
   end
+  puts "Maximum seat ID #{max}"
 
-  puts max
+  self_seat = 0
+  (0..max).each do |id|
+    self_seat = id unless (id_list.includes? id) if (id_list.includes? (id + 1)) if (id_list.includes? (id - 1))
+  end
+
+  puts "seat left: #{self_seat}"
 end
 
 class BoardingPass
