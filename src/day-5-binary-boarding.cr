@@ -32,8 +32,12 @@ unless file_name.empty?
     passes << BoardingPass.new(pass)
   end
 
-  result = 0
-  puts result
+  max = 0
+  passes.each do |pass|
+    max = pass.id if pass.id > max
+  end
+
+  puts max
 end
 
 class BoardingPass
