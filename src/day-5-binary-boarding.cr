@@ -5,6 +5,9 @@ require "string_scanner"
 file_name = ""
 benchmark = false
 
+ROW_KEY = {'F' => '0', 'B' => '1'}
+COL_KEY = {'L' => '0', 'R' => '1'}
+
 OptionParser.parse do |parser|
   parser.banner = "Welcome to Report Repair"
 
@@ -21,6 +24,35 @@ OptionParser.parse do |parser|
 end
 
 unless file_name.empty?
+  seats = File.read_lines(file_name)
+
+  passes = [] of BoardingPass
+
+  seats.each do |pass|
+    passes << BoardingPass.new(pass)
+  end
+
   result = 0
   puts result
 end
+
+class BoardingPass
+  @row : Int32
+  @column : Int32
+  getter id : Int32
+
+  def initialize(input : String)
+    row = input[0..6]
+    column = input[7..9]
+
+    row = row.gsub(ROW_KEY)
+    column = column.gsub(COL_KEY)
+
+    @row = row.to_i(2)
+    @column = column.to_i(2)
+
+    @id = @row * 8 + @column
+
+    puts "Row: #{@row}, Column #{@column}, ID: #{@id}"
+  end
+end 
